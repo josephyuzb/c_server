@@ -12,7 +12,7 @@
 #include <pthread.h>
 #include <sched.h>
 
-#define SERVER_PORT		8000
+#define SERVER_PORT		8001
 #define BACK_LOG 		20
 #define BUFFER_SIZE 	1024
 
@@ -33,8 +33,8 @@ void* RecvProc(void* pThreadParameter)
 		static int i  = 0;
 		++i;
 		buffer[length] = 0;
-		printf("received data[%d] is : %s\n ",i, buffer);
-		char message[] ="this is server in thread lilei";
+		printf("received data[%d] is : %x\n ",i, buffer[i]);
+		char message[] ="this is server in thread yuzb";
 		send(fdSocket,message,sizeof(message),0);     //发送类信息
 	}
 

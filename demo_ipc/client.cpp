@@ -13,7 +13,7 @@
 #include <sched.h>
 
 #define BUFFER_SIZE 	1024
-#define SERV_PORT 8000
+#define SERV_PORT 8001
 
 void* RecvProc(void* pThreadParameter)
 {
@@ -41,6 +41,7 @@ void* RecvProc(void* pThreadParameter)
 
 int main(int argc, char **argv)
 {
+	  printf("[client] send class size yuzb: %x\n",0x89);
 	struct hostent *nlp_host = NULL;
 	char host_name[] = "localhost";
 	if(NULL == (nlp_host=gethostbyname(host_name))){
@@ -62,10 +63,10 @@ int main(int argc, char **argv)
 	serv_addr.sin_port = htons(SERV_PORT);
 
 
-/*	if(-1 == connect(sockfd,(struct sockaddr*)&serv_addr,sizeof(serv_addr))){
+	if(-1 == connect(sockfd,(struct sockaddr*)&serv_addr,sizeof(serv_addr))){
 		printf("Connect Error!\n");
 		exit(1);
-	} */
+	}
 
 	pthread_t		thread;
 	pthread_attr_t 	attr;
@@ -75,11 +76,12 @@ int main(int argc, char **argv)
 	pthread_create(&thread, NULL, RecvProc, &sockfd);
 	//RecvProc(&sockfd); //for test
 
-	char message[] ="this is client";
+	  printf("[client] send class size yuzb: %x\n",0x90);
+	char message[10] ={0x01,0x02,0x03,0x04,0x05,0x06,0x88,0x89,0x90};
         int len = strlen(message);
-        message[0] = 0x00;
-        message[len-1] = 0xff;
-	for(int i = 0;i < 6;++i)
+       // message[0] = 0x00;
+       // message[len-1] = 0xff;
+	for(int i = 0;i < len;++i)
 	{
           send(sockfd,message,sizeof(message),0);
 	  printf("[client] send class size: %ld\n",sizeof(message));
@@ -87,6 +89,7 @@ int main(int argc, char **argv)
 	  sleep(3);
 	}
 
+	  printf("[client] send class size yuzb: %x\n",0x91);
 	pause();
 
 //	close(sockfd);
